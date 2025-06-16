@@ -4,6 +4,26 @@ import './App.css'
 
 export default function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [formData, setFormData] = useState({
+    nombre: '',
+    email: '',
+    empresa: '',
+    telefono: '',
+    tipoProyecto: '',
+    presupuesto: '',
+    timeline: '',
+    descripcion: '',
+    nda: false
+  })
+  const [contactFormData, setContactFormData] = useState({
+    nombre: '',
+    email: '',
+    empresa: '',
+    tipoConsulta: '',
+    mensaje: ''
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitMessage, setSubmitMessage] = useState('')
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen)
@@ -11,6 +31,127 @@ export default function App() {
 
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false)
+  }
+
+  const handleInputChange = (e, formType = 'project') => {
+    const { name, value, type, checked } = e.target
+    const actualValue = type === 'checkbox' ? checked : value
+    
+    if (formType === 'project') {
+      setFormData(prev => ({
+        ...prev,
+        [name]: actualValue
+      }))
+    } else {
+      setContactFormData(prev => ({
+        ...prev,
+        [name]: actualValue
+      }))
+    }
+  }
+
+  const sendEmail = async (data, type) => {
+    const subject = type === 'project' 
+      ? `Nueva Propuesta de Proyecto - ${data.tipoProyecto || 'No especificado'}`
+      : `Consulta General - ${data.tipoConsulta || 'No especificado'}`
+    
+    const body = type === 'project' 
+      ? `NUEVA PROPUESTA DE PROYECTO
+
+👤 INFORMACIÓN DEL CLIENTE:
+Nombre: ${data.nombre}
+Email: ${data.email}
+Empresa: ${data.empresa || 'No especificada'}
+Teléfono: ${data.telefono || 'No especificado'}
+
+💼 DETALLES DEL PROYECTO:
+Tipo de Proyecto: ${data.tipoProyecto}
+Presupuesto Estimado: ${data.presupuesto}
+Timeline Deseado: ${data.timeline || 'No especificado'}
+Requiere NDA: ${data.nda ? 'Sí' : 'No'}
+
+📝 DESCRIPCIÓN:
+${data.descripcion}
+
+---
+Enviado desde: Kryptika S.A.S Website
+Fecha: ${new Date().toLocaleString('es-CO')}
+`
+      : `NUEVA CONSULTA GENERAL
+
+👤 INFORMACIÓN DEL CLIENTE:
+Nombre: ${data.nombre}
+Email: ${data.email}
+Empresa: ${data.empresa || 'No especificada'}
+Tipo de Consulta: ${data.tipoConsulta}
+
+📝 MENSAJE:
+${data.mensaje}
+
+---
+Enviado desde: Kryptika S.A.S Website
+Fecha: ${new Date().toLocaleString('es-CO')}
+`
+
+    const mailtoLink = `mailto:contacto@kryptika.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    window.open(mailtoLink, '_blank')
+  }
+
+  const handleProjectSubmit = async (e) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    
+    try {
+      await sendEmail(formData, 'project')
+      setSubmitMessage('✅ Propuesta enviada exitosamente. Te contactaremos en 24 horas.')
+      setFormData({
+        nombre: '',
+        email: '',
+        empresa: '',
+        telefono: '',
+        tipoProyecto: '',
+        presupuesto: '',
+        timeline: '',
+        descripcion: '',
+        nda: false
+      })
+      
+      setTimeout(() => setSubmitMessage(''), 5000)
+    } catch (error) {
+      setSubmitMessage('❌ Error al enviar. Por favor intenta nuevamente.')
+      setTimeout(() => setSubmitMessage(''), 5000)
+    }
+    
+    setIsSubmitting(false)
+  }
+
+  const handleContactSubmit = async (e) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    
+    try {
+      await sendEmail(contactFormData, 'contact')
+      setSubmitMessage('✅ Mensaje enviado exitosamente. Te responderemos pronto.')
+      setContactFormData({
+        nombre: '',
+        email: '',
+        empresa: '',
+        tipoConsulta: '',
+        mensaje: ''
+      })
+      
+      setTimeout(() => setSubmitMessage(''), 5000)
+    } catch (error) {
+      setSubmitMessage('❌ Error al enviar. Por favor intenta nuevamente.')
+      setTimeout(() => setSubmitMessage(''), 5000)
+    }
+    
+    setIsSubmitting(false)
+  }
+
+  const scrollToSection = (sectionId) => {
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
+    closeMobileMenu()
   }
 
   return (
@@ -36,25 +177,25 @@ export default function App() {
 
           {/* Desktop Navigation */}
           <ul className="nav-links desktop-nav">
-            <li><a href="#inicio">Inicio</a></li>
-            <li><a href="#servicios">Servicios</a></li>
-            <li><a href="#proceso">Proceso</a></li>
-            <li><a href="#negocios">Hagamos Negocios</a></li>
-            <li><a href="#fundadores">Fundadores</a></li>
-            <li><a href="#testimonios">Testimonios</a></li>
-            <li><a href="#contacto">Contacto</a></li>
+            <li><button onClick={() => scrollToSection('inicio')} className="nav-button">Inicio</button></li>
+            <li><button onClick={() => scrollToSection('servicios')} className="nav-button">Servicios</button></li>
+            <li><button onClick={() => scrollToSection('proceso')} className="nav-button">Proceso</button></li>
+            <li><button onClick={() => scrollToSection('negocios')} className="nav-button">Hagamos Negocios</button></li>
+            <li><button onClick={() => scrollToSection('fundadores')} className="nav-button">Fundadores</button></li>
+            <li><button onClick={() => scrollToSection('testimonios')} className="nav-button">Testimonios</button></li>
+            <li><button onClick={() => scrollToSection('contacto')} className="nav-button">Contacto</button></li>
           </ul>
 
           {/* Mobile Navigation */}
           <div className={`mobile-nav ${isMobileMenuOpen ? 'open' : ''}`}>
             <ul className="mobile-nav-links">
-              <li><a href="#inicio" onClick={closeMobileMenu}>Inicio</a></li>
-              <li><a href="#servicios" onClick={closeMobileMenu}>Servicios</a></li>
-              <li><a href="#proceso" onClick={closeMobileMenu}>Proceso</a></li>
-              <li><a href="#negocios" onClick={closeMobileMenu}>Hagamos Negocios</a></li>
-              <li><a href="#fundadores" onClick={closeMobileMenu}>Fundadores</a></li>
-              <li><a href="#testimonios" onClick={closeMobileMenu}>Testimonios</a></li>
-              <li><a href="#contacto" onClick={closeMobileMenu}>Contacto</a></li>
+              <li><button onClick={() => scrollToSection('inicio')} className="nav-button-mobile">Inicio</button></li>
+              <li><button onClick={() => scrollToSection('servicios')} className="nav-button-mobile">Servicios</button></li>
+              <li><button onClick={() => scrollToSection('proceso')} className="nav-button-mobile">Proceso</button></li>
+              <li><button onClick={() => scrollToSection('negocios')} className="nav-button-mobile">Hagamos Negocios</button></li>
+              <li><button onClick={() => scrollToSection('fundadores')} className="nav-button-mobile">Fundadores</button></li>
+              <li><button onClick={() => scrollToSection('testimonios')} className="nav-button-mobile">Testimonios</button></li>
+              <li><button onClick={() => scrollToSection('contacto')} className="nav-button-mobile">Contacto</button></li>
             </ul>
           </div>
         </nav>
@@ -75,8 +216,10 @@ export default function App() {
             creando software intuitivo y accesible para todos.
           </p>
           <div className="hero-buttons">
-            <button className="cta-button primary">Conoce nuestros servicios</button>
-            <button className="cta-button secondary" onClick={() => document.getElementById('negocios').scrollIntoView()}>
+            <button className="cta-button primary" onClick={() => scrollToSection('servicios')}>
+              Conoce nuestros servicios
+            </button>
+            <button className="cta-button secondary" onClick={() => scrollToSection('negocios')}>
               Reservar Proyecto
             </button>
           </div>
@@ -241,46 +384,105 @@ export default function App() {
             
             <div className="project-form">
               <h3>Reserva tu Proyecto</h3>
-              <form className="reservation-form">
+              {submitMessage && (
+                <div className={`submit-message ${submitMessage.includes('✅') ? 'success' : 'error'}`}>
+                  {submitMessage}
+                </div>
+              )}
+              <form className="reservation-form" onSubmit={handleProjectSubmit}>
                 <div className="form-row">
-                  <input type="text" placeholder="Nombre completo *" required />
-                  <input type="email" placeholder="Email corporativo *" required />
+                  <input 
+                    type="text" 
+                    name="nombre"
+                    placeholder="Nombre completo *" 
+                    value={formData.nombre}
+                    onChange={(e) => handleInputChange(e, 'project')}
+                    required 
+                  />
+                  <input 
+                    type="email" 
+                    name="email"
+                    placeholder="Email corporativo *" 
+                    value={formData.email}
+                    onChange={(e) => handleInputChange(e, 'project')}
+                    required 
+                  />
                 </div>
                 <div className="form-row">
-                  <input type="text" placeholder="Empresa" />
-                  <input type="tel" placeholder="Teléfono" />
+                  <input 
+                    type="text" 
+                    name="empresa"
+                    placeholder="Empresa" 
+                    value={formData.empresa}
+                    onChange={(e) => handleInputChange(e, 'project')}
+                  />
+                  <input 
+                    type="tel" 
+                    name="telefono"
+                    placeholder="Teléfono" 
+                    value={formData.telefono}
+                    onChange={(e) => handleInputChange(e, 'project')}
+                  />
                 </div>
-                <select required>
+                <select 
+                  name="tipoProyecto"
+                  value={formData.tipoProyecto}
+                  onChange={(e) => handleInputChange(e, 'project')}
+                  required
+                >
                   <option value="">Tipo de proyecto *</option>
-                  <option value="web">Aplicación Web</option>
-                  <option value="mobile">Aplicación Móvil</option>
-                  <option value="ecommerce">E-commerce</option>
-                  <option value="mvp">MVP</option>
-                  <option value="consultoria">Consultoría</option>
-                  <option value="otro">Otro</option>
+                  <option value="Aplicación Web">Aplicación Web</option>
+                  <option value="Aplicación Móvil">Aplicación Móvil</option>
+                  <option value="E-commerce">E-commerce</option>
+                  <option value="MVP Personalizado">MVP Personalizado</option>
+                  <option value="Consultoría Técnica">Consultoría Técnica</option>
+                  <option value="Sistema Hermético">Sistema Hermético y Local</option>
+                  <option value="Otro">Otro</option>
                 </select>
-                <select required>
+                <select 
+                  name="presupuesto"
+                  value={formData.presupuesto}
+                  onChange={(e) => handleInputChange(e, 'project')}
+                  required
+                >
                   <option value="">Presupuesto estimado *</option>
-                  <option value="5-15k">$5,000 - $15,000 USD</option>
-                  <option value="15-30k">$15,000 - $30,000 USD</option>
-                  <option value="30-50k">$30,000 - $50,000 USD</option>
-                  <option value="50k+">$50,000+ USD</option>
-                  <option value="consultoria">Solo consultoría</option>
+                  <option value="$5,000 - $15,000 USD">$5,000 - $15,000 USD</option>
+                  <option value="$15,000 - $30,000 USD">$15,000 - $30,000 USD</option>
+                  <option value="$30,000 - $50,000 USD">$30,000 - $50,000 USD</option>
+                  <option value="$50,000+ USD">$50,000+ USD</option>
+                  <option value="Solo consultoría">Solo consultoría</option>
                 </select>
-                <select>
+                <select 
+                  name="timeline"
+                  value={formData.timeline}
+                  onChange={(e) => handleInputChange(e, 'project')}
+                >
                   <option value="">Timeline deseado</option>
-                  <option value="simple">Proyecto Simple (1-3 meses)</option>
-                  <option value="medio">Proyecto Medio (3-6 meses)</option>
-                  <option value="complejo">Proyecto Complejo (6-12 meses)</option>
-                  <option value="evaluacion">Requiere evaluación detallada</option>
+                  <option value="Proyecto Simple (1-3 meses)">Proyecto Simple (1-3 meses)</option>
+                  <option value="Proyecto Medio (3-6 meses)">Proyecto Medio (3-6 meses)</option>
+                  <option value="Proyecto Complejo (6-12 meses)">Proyecto Complejo (6-12 meses)</option>
+                  <option value="Requiere evaluación detallada">Requiere evaluación detallada</option>
                 </select>
-                <textarea placeholder="Describe tu proyecto en detalle. ¿Qué problema resuelve? ¿Quién es tu usuario objetivo? *" rows="4" required></textarea>
+                <textarea 
+                  name="descripcion"
+                  placeholder="Describe tu proyecto en detalle. ¿Qué problema resuelve? ¿Quién es tu usuario objetivo? *" 
+                  rows="4" 
+                  value={formData.descripcion}
+                  onChange={(e) => handleInputChange(e, 'project')}
+                  required
+                ></textarea>
                 <div className="form-check">
-                  <input type="checkbox" id="nda" />
+                  <input 
+                    type="checkbox" 
+                    id="nda" 
+                    name="nda"
+                    checked={formData.nda}
+                    onChange={(e) => handleInputChange(e, 'project')}
+                  />
                   <label htmlFor="nda">Mi proyecto requiere un acuerdo de confidencialidad (NDA)</label>
                 </div>
-                <button type="submit" className="submit-btn">
-                  Enviar Propuesta de Proyecto
+                <button type="submit" className="submit-btn" disabled={isSubmitting}>
+                  {isSubmitting ? 'Enviando...' : 'Enviar Propuesta de Proyecto'}
                 </button>
                 <p className="form-note">
                   📞 Te contactaremos en 24 horas para agendar una consulta gratuita de 30 minutos
@@ -458,19 +660,33 @@ export default function App() {
               <h3>Información de Contacto</h3>
               <div className="contact-item">
                 <span className="contact-icon">📧</span>
-                <span>contacto@kryptika.com</span>
+                <a href="mailto:contacto@kryptika.com" className="contact-link">contacto@kryptika.com</a>
               </div>
               <div className="contact-item">
                 <span className="contact-icon">📱</span>
-                <span>+57 (1) 234-5678</span>
+                <a href="tel:+5712345678" className="contact-link">+57 (1) 234-5678</a>
               </div>
               <div className="contact-item">
                 <span className="contact-icon">📍</span>
-                <span>Bogotá, Colombia</span>
+                <a 
+                  href="https://maps.google.com/?q=Bogotá,Colombia" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="contact-link"
+                >
+                  Bogotá, Colombia
+                </a>
               </div>
               <div className="contact-item">
                 <span className="contact-icon">💬</span>
-                <span>WhatsApp: +57 300 123 4567</span>
+                <a 
+                  href="https://wa.me/573001234567?text=Hola, estoy interesado en sus servicios de desarrollo de software" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="contact-link"
+                >
+                  WhatsApp: +57 300 123 4567
+                </a>
               </div>
               
               <div className="contact-hours">
@@ -480,19 +696,54 @@ export default function App() {
                 <p>Soporte 24/7 para clientes activos</p>
               </div>
             </div>
-            <form className="contact-form">
-              <input type="text" placeholder="Nombre" required />
-              <input type="email" placeholder="Email" required />
-              <input type="text" placeholder="Empresa" />
-              <select>
+            <form className="contact-form" onSubmit={handleContactSubmit}>
+              <input 
+                type="text" 
+                name="nombre"
+                placeholder="Nombre" 
+                value={contactFormData.nombre}
+                onChange={(e) => handleInputChange(e, 'contact')}
+                required 
+              />
+              <input 
+                type="email" 
+                name="email"
+                placeholder="Email" 
+                value={contactFormData.email}
+                onChange={(e) => handleInputChange(e, 'contact')}
+                required 
+              />
+              <input 
+                type="text" 
+                name="empresa"
+                placeholder="Empresa" 
+                value={contactFormData.empresa}
+                onChange={(e) => handleInputChange(e, 'contact')}
+              />
+              <select 
+                name="tipoConsulta"
+                value={contactFormData.tipoConsulta}
+                onChange={(e) => handleInputChange(e, 'contact')}
+              >
                 <option value="">Tipo de consulta</option>
-                <option value="proyecto">Nuevo Proyecto</option>
-                <option value="consultoria">Consultoría</option>
-                <option value="soporte">Soporte</option>
-                <option value="otro">Otro</option>
+                <option value="Nuevo Proyecto">Nuevo Proyecto</option>
+                <option value="Consultoría Técnica">Consultoría Técnica</option>
+                <option value="Soporte Técnico">Soporte Técnico</option>
+                <option value="Alianza Estratégica">Alianza Estratégica</option>
+                <option value="Información General">Información General</option>
+                <option value="Otro">Otro</option>
               </select>
-              <textarea placeholder="Mensaje" rows="5" required></textarea>
-              <button type="submit">Enviar Mensaje</button>
+              <textarea 
+                name="mensaje"
+                placeholder="Mensaje" 
+                rows="5" 
+                value={contactFormData.mensaje}
+                onChange={(e) => handleInputChange(e, 'contact')}
+                required
+              ></textarea>
+              <button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Enviando...' : 'Enviar Mensaje'}
+              </button>
             </form>
           </div>
         </div>
@@ -507,41 +758,41 @@ export default function App() {
               <p>Por un software más humano</p>
               <div className="footer-social">
                 <span>Síguenos:</span>
-                <a href="#">LinkedIn</a>
-                <a href="#">Twitter</a>
-                <a href="#">GitHub</a>
+                <a href="https://linkedin.com/company/kryptika-sas" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="https://twitter.com/kryptika_sas" target="_blank" rel="noopener noreferrer">Twitter</a>
+                <a href="https://github.com/kryptika-sas" target="_blank" rel="noopener noreferrer">GitHub</a>
               </div>
             </div>
             <div className="footer-links">
               <div className="footer-column">
                 <h4>Servicios</h4>
-                <a href="#servicios">Desarrollo Web</a>
-                <a href="#servicios">Apps Móviles</a>
-                <a href="#servicios">UX/UI Design</a>
-                <a href="#servicios">Consultoría</a>
+                <button onClick={() => scrollToSection('servicios')} className="footer-link">Desarrollo Web</button>
+                <button onClick={() => scrollToSection('servicios')} className="footer-link">Apps Móviles</button>
+                <button onClick={() => scrollToSection('servicios')} className="footer-link">UX/UI Design</button>
+                <button onClick={() => scrollToSection('servicios')} className="footer-link">Consultoría</button>
               </div>
               <div className="footer-column">
                 <h4>Empresa</h4>
-                <a href="#nosotros">Sobre Nosotros</a>
-                <a href="#fundadores">Fundadores</a>
-                <a href="#proceso">Proceso</a>
-                <a href="#testimonios">Testimonios</a>
+                <button onClick={() => scrollToSection('nosotros')} className="footer-link">Sobre Nosotros</button>
+                <button onClick={() => scrollToSection('fundadores')} className="footer-link">Fundadores</button>
+                <button onClick={() => scrollToSection('proceso')} className="footer-link">Proceso</button>
+                <button onClick={() => scrollToSection('testimonios')} className="footer-link">Testimonios</button>
               </div>
               <div className="footer-column">
                 <h4>Contacto</h4>
-                <a href="#contacto">Contactanos</a>
-                <a href="#negocios">Reservar Proyecto</a>
-                <span>📧 contacto@kryptika.com</span>
-                <span>📱 +57 (1) 234-5678</span>
+                <button onClick={() => scrollToSection('contacto')} className="footer-link">Contactanos</button>
+                <button onClick={() => scrollToSection('negocios')} className="footer-link">Reservar Proyecto</button>
+                <a href="mailto:contacto@kryptika.com" className="footer-contact">📧 contacto@kryptika.com</a>
+                <a href="tel:+5712345678" className="footer-contact">📱 +57 (1) 234-5678</a>
               </div>
             </div>
           </div>
           <div className="footer-bottom">
             <p>&copy; 2024 Kryptika S.A.S. Todos los derechos reservados.</p>
             <div className="footer-legal">
-              <a href="#">Términos y Condiciones</a>
-              <a href="#">Política de Privacidad</a>
-              <a href="#">Aviso Legal</a>
+              <a href="mailto:legal@kryptika.com?subject=Términos y Condiciones">Términos y Condiciones</a>
+              <a href="mailto:legal@kryptika.com?subject=Política de Privacidad">Política de Privacidad</a>
+              <a href="mailto:legal@kryptika.com?subject=Aviso Legal">Aviso Legal</a>
             </div>
           </div>
         </div>
