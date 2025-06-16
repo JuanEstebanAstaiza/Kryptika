@@ -49,11 +49,11 @@ export default function App() {
             <div className="service-card">
               <div className="service-icon">💻</div>
               <h3>Desarrollo de Software</h3>
-              <p>Aplicaciones web y móviles diseñadas con enfoque en la usabilidad y experiencia del usuario.</p>
+              <p>Especializados en software hermético y local, primando la seguridad de los sistemas y manteniendo nuestros productos altamente optimizados.</p>
               <ul className="service-features">
-                <li>Aplicaciones Web Responsivas</li>
-                <li>Aplicaciones Móviles Nativas</li>
-                <li>Progressive Web Apps (PWA)</li>
+                <li>Software Hermético y Seguro</li>
+                <li>Aplicaciones Locales Optimizadas</li>
+                <li>Sistemas de Alta Seguridad</li>
               </ul>
             </div>
             <div className="service-card">
@@ -157,11 +157,11 @@ export default function App() {
                 
                 <div className="business-option">
                   <div className="option-icon">⚡</div>
-                  <h4>MVP Rápido</h4>
-                  <p>Lanza tu producto mínimo viable en tiempo récord para validar tu idea de negocio.</p>
+                  <h4>MVP Personalizado</h4>
+                  <p>Desarrollamos tu producto mínimo viable adaptándonos al tamaño y complejidad específica de tu proyecto.</p>
                   <ul>
-                    <li>Desarrollo en 4-8 semanas</li>
-                    <li>Funcionalidades core</li>
+                    <li>Tiempo variable según complejidad</li>
+                    <li>Funcionalidades core optimizadas</li>
                     <li>Escalabilidad garantizada</li>
                   </ul>
                 </div>
@@ -227,9 +227,10 @@ export default function App() {
                 </select>
                 <select>
                   <option value="">Timeline deseado</option>
-                  <option value="urgente">Urgente (1-2 meses)</option>
-                  <option value="normal">Normal (3-6 meses)</option>
-                  <option value="flexible">Flexible (6+ meses)</option>
+                  <option value="simple">Proyecto Simple (1-3 meses)</option>
+                  <option value="medio">Proyecto Medio (3-6 meses)</option>
+                  <option value="complejo">Proyecto Complejo (6-12 meses)</option>
+                  <option value="evaluacion">Requiere evaluación detallada</option>
                 </select>
                 <textarea placeholder="Describe tu proyecto en detalle. ¿Qué problema resuelve? ¿Quién es tu usuario objetivo? *" rows="4" required></textarea>
                 <div className="form-check">
