@@ -1,7 +1,18 @@
 
+import { useState } from 'react'
 import './App.css'
 
 export default function App() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen)
+  }
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false)
+  }
+
   return (
     <div className="app">
       {/* Header */}
@@ -11,7 +22,20 @@ export default function App() {
             <img src="/kryptika-logo.png" alt="Kryptika Logo" className="logo-img" />
             <h1>Kryptika S.A.S</h1>
           </div>
-          <ul className="nav-links">
+          
+          {/* Hamburger Button */}
+          <button 
+            className="hamburger-menu"
+            onClick={toggleMobileMenu}
+            aria-label="Menú de navegación"
+          >
+            <span className={`hamburger-line ${isMobileMenuOpen ? 'active' : ''}`}></span>
+            <span className={`hamburger-line ${isMobileMenuOpen ? 'active' : ''}`}></span>
+            <span className={`hamburger-line ${isMobileMenuOpen ? 'active' : ''}`}></span>
+          </button>
+
+          {/* Desktop Navigation */}
+          <ul className="nav-links desktop-nav">
             <li><a href="#inicio">Inicio</a></li>
             <li><a href="#servicios">Servicios</a></li>
             <li><a href="#proceso">Proceso</a></li>
@@ -20,7 +44,25 @@ export default function App() {
             <li><a href="#testimonios">Testimonios</a></li>
             <li><a href="#contacto">Contacto</a></li>
           </ul>
+
+          {/* Mobile Navigation */}
+          <div className={`mobile-nav ${isMobileMenuOpen ? 'open' : ''}`}>
+            <ul className="mobile-nav-links">
+              <li><a href="#inicio" onClick={closeMobileMenu}>Inicio</a></li>
+              <li><a href="#servicios" onClick={closeMobileMenu}>Servicios</a></li>
+              <li><a href="#proceso" onClick={closeMobileMenu}>Proceso</a></li>
+              <li><a href="#negocios" onClick={closeMobileMenu}>Hagamos Negocios</a></li>
+              <li><a href="#fundadores" onClick={closeMobileMenu}>Fundadores</a></li>
+              <li><a href="#testimonios" onClick={closeMobileMenu}>Testimonios</a></li>
+              <li><a href="#contacto" onClick={closeMobileMenu}>Contacto</a></li>
+            </ul>
+          </div>
         </nav>
+
+        {/* Mobile Menu Overlay */}
+        {isMobileMenuOpen && (
+          <div className="mobile-menu-overlay" onClick={closeMobileMenu}></div>
+        )}
       </header>
 
       {/* Hero Section */}
