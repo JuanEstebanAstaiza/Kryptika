@@ -8,11 +8,13 @@ export default function App() {
       <header className="header">
         <nav className="nav">
           <div className="logo">
+            <img src="/kryptika-logo.png" alt="Kryptika Logo" className="logo-img" />
             <h1>Kryptika S.A.S</h1>
           </div>
           <ul className="nav-links">
             <li><a href="#inicio">Inicio</a></li>
             <li><a href="#servicios">Servicios</a></li>
+            <li><a href="#fundadores">Fundadores</a></li>
             <li><a href="#nosotros">Nosotros</a></li>
             <li><a href="#contacto">Contacto</a></li>
           </ul>
@@ -56,6 +58,68 @@ export default function App() {
               <div className="service-icon">🚀</div>
               <h3>Transformación Digital</h3>
               <p>Modernización de procesos con tecnología que potencia el talento humano.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Founders Section */}
+      <section id="fundadores" className="founders">
+        <div className="container">
+          <h2>Nuestros Fundadores</h2>
+          <div className="founders-grid">
+            <div className="founder-card">
+              <div className="founder-avatar">
+                <div className="avatar-placeholder">
+                  <span>👤</span>
+                </div>
+              </div>
+              <h3>[Nombre del Fundador 1]</h3>
+              <p className="founder-title">[Cargo/Especialidad]</p>
+              <p className="founder-description">
+                [Descripción breve de la experiencia y rol en la empresa. 
+                Incluir formación académica, años de experiencia, y visión para Kryptika.]
+              </p>
+              <div className="founder-contact">
+                <span>📧 [email@kryptika.com]</span>
+                <span>💼 [LinkedIn]</span>
+              </div>
+            </div>
+            
+            <div className="founder-card">
+              <div className="founder-avatar">
+                <div className="avatar-placeholder">
+                  <span>👤</span>
+                </div>
+              </div>
+              <h3>[Nombre del Fundador 2]</h3>
+              <p className="founder-title">[Cargo/Especialidad]</p>
+              <p className="founder-description">
+                [Descripción breve de la experiencia y rol en la empresa. 
+                Incluir formación académica, años de experiencia, y visión para Kryptika.]
+              </p>
+              <div className="founder-contact">
+                <span>📧 [email@kryptika.com]</span>
+                <span>💼 [LinkedIn]</span>
+              </div>
+            </div>
+            
+            <div className="founder-card">
+              <div className="founder-avatar">
+                <div className="avatar-placeholder">
+                  <span>👤</span>
+                </div>
+              </div>
+              <h3>[Nombre del Fundador 3]</h3>
+              <p className="founder-title">[Cargo/Especialidad]</p>
+              <p className="founder-description">
+                [Descripción breve de la experiencia y rol en la empresa. 
+                Incluir formación académica, años de experiencia, y visión para Kryptika.]
+              </p>
+              <div className="founder-contact">
+                <span>📧 [email@kryptika.com]</span>
+                <span>💼 [LinkedIn]</span>
+              </div>
             </div>
           </div>
         </div>
@@ -133,6 +197,7 @@ export default function App() {
             <div className="footer-links">
               <a href="#inicio">Inicio</a>
               <a href="#servicios">Servicios</a>
+              <a href="#fundadores">Fundadores</a>
               <a href="#nosotros">Nosotros</a>
               <a href="#contacto">Contacto</a>
             </div>

@@ -17,7 +17,7 @@ body {
 
 /* Header */
 .header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #4a9b9b 0%, #2d5a5a 100%);
   padding: 1rem 0;
   position: fixed;
   width: 100%;
@@ -33,6 +33,17 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 0 2rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo-img {
+  height: 50px;
+  width: auto;
 }
 
 .logo h1 {
@@ -60,7 +71,7 @@ body {
 
 /* Hero Section */
 .hero {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #4a9b9b 0%, #2d5a5a 100%);
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -99,7 +110,7 @@ body {
 
 .cta-button {
   background: white;
-  color: #667eea;
+  color: #4a9b9b;
   padding: 1rem 2rem;
   border: none;
   border-radius: 50px;
@@ -171,10 +182,102 @@ body {
   line-height: 1.6;
 }
 
+/* Founders Section */
+.founders {
+  padding: 5rem 0;
+  background: white;
+}
+
+.founders h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  color: #2d5a5a;
+}
+
+.founders-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.founder-card {
+  background: #f8f9fa;
+  padding: 2rem;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 5px 20px rgba(74, 155, 155, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.founder-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(74, 155, 155, 0.2);
+  border-color: #4a9b9b;
+}
+
+.founder-avatar {
+  margin-bottom: 1.5rem;
+}
+
+.avatar-placeholder {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4a9b9b 0%, #2d5a5a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  font-size: 3rem;
+  color: white;
+  border: 4px solid white;
+  box-shadow: 0 8px 25px rgba(74, 155, 155, 0.3);
+}
+
+.founder-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #2d5a5a;
+  font-weight: 700;
+}
+
+.founder-title {
+  font-size: 1.1rem;
+  color: #4a9b9b;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.founder-description {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.founder-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #4a9b9b;
+}
+
+.founder-contact span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
 /* About Section */
 .about {
   padding: 5rem 0;
-  background: white;
+  background: #f8f9fa;
 }
 
 .about-content {
@@ -271,11 +374,11 @@ body {
 .contact-form input:focus,
 .contact-form textarea:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #4a9b9b;
 }
 
 .contact-form button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #4a9b9b 0%, #2d5a5a 100%);
   color: white;
   padding: 1rem;
   border: none;
@@ -375,6 +478,10 @@ body {
   }
   
   .contact-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .founders-grid {
     grid-template-columns: 1fr;
   }
   
